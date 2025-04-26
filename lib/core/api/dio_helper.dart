@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:nagwa_task/core/api/endpoints.dart';
 
 /// this class is used to manage the dio requests
@@ -19,12 +20,39 @@ class DioHelper {
     ),
   );
 
+  static void _initializeInterceptors() {
+    dio.interceptors.clear();
+    dio.interceptors.add(
+      LogInterceptor(
+        requestBody: true,
+        responseBody: true,
+        logPrint: (object) {
+          debugPrint(object.toString());
+        },
+      ),
+    );
+  }
+
+  /// this method is used to initialize the dio instance
+  static void initialize() {
+    _initializeInterceptors();
+  }
+
   /// this method is used to get data from the server
   static Future<Response<dynamic>> getData({
     required String url,
     Map<String, dynamic>? queryParameters,
     void Function(int, int)? onReceiveProgress,
   }) {
+    // Filter out null values from query parameters
+    if (queryParameters != null) {
+      queryParameters.removeWhere((key, value) => value == null);
+    }
+
+    // Debug print
+    debugPrint('GET Request: $url');
+    debugPrint('Query Parameters: $queryParameters');
+
     return dio.get(
       url,
       queryParameters: queryParameters,

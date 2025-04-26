@@ -30,7 +30,10 @@ class BooksRepositoryImpl extends BooksRepository {
     String? search,
   }) async {
     try {
-      final books = await remoteDataSource.fetchBooks(page: page);
+      final books = await remoteDataSource.fetchBooks(
+        page: page,
+        search: search,
+      );
       await localDataSource.saveBooksToLocal(books, page);
       return right(books);
     } on Exception catch (e) {

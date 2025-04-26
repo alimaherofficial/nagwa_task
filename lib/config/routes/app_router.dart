@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:nagwa_task/config/routes/app_paths.dart';
 import 'package:nagwa_task/core/utils/analytics_navigator_observer.dart';
 import 'package:nagwa_task/features/books/presentation/pages/books_screen.dart';
+import 'package:nagwa_task/features/books/presentation/pages/search_screen.dart';
 import 'package:nagwa_task/features/splash/presentation/pages/splash_screen.dart';
 
 /// A global key that will uniquely identify the Navigator
@@ -22,6 +23,10 @@ class AppRouter {
       GoRoute(
         path: AppPaths.books,
         builder: (context, state) => const BooksScreen(),
+      ),
+      GoRoute(
+        path: AppPaths.search,
+        builder: (context, state) => const SearchScreen(),
       ),
     ],
   );

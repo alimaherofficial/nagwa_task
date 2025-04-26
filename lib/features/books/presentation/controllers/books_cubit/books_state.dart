@@ -30,6 +30,7 @@ abstract class BooksState with _$BooksState {
     @Default(false) bool isLoadingMore,
     String? errorMessage,
     int? currentPage,
+    String? currentSearchQuery,
   }) = _BooksState;
 
   /// The initial state

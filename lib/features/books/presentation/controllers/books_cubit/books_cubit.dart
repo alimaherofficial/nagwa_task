@@ -26,56 +26,91 @@ class BooksCubit extends Cubit<BooksState> {
     result.fold(
       (l) => emit(state.copyWith(status: BooksStateStatus.error)),
       (r) => emit(
-        state.copyWith(status: BooksStateStatus.loadedFromLocal, books: r),
+        state.copyWith(
+          status: BooksStateStatus.loadedFromLocal,
+          books: r,
+          currentSearchQuery: search,
+        ),
       ),
     );
   }
 
   /// this function is used to get the books from remote
   Future<void> getBooksFromRemote({String? search}) async {
-    // Don't fetch if already loading or if there are no more pages
+    // Don't fetch if already loading
     if (state.status == BooksStateStatus.loading &&
         state.isLoadingMore == true) {
       return;
     }
 
-    emit(state.copyWith(status: BooksStateStatus.loading, isLoadingMore: true));
+    // If search is null but we have a currentSearchQuery, use that
+    final effectiveSearch = search ?? state.currentSearchQuery;
+
+    // If a new search is being performed, reset pagination data
+    final isNewSearch = search != null && search != state.currentSearchQuery;
+    if (isNewSearch) {
+      emit(
+        state.copyWith(
+          status: BooksStateStatus.loading,
+          isLoadingMore: true,
+          currentSearchQuery: search,
+          books: null,
+          currentPage: null,
+        ),
+      );
+    } else {
+      emit(
+        state.copyWith(status: BooksStateStatus.loading, isLoadingMore: true),
+      );
+    }
 
     var nextPage = 1;
-    if (state.books?.next != null && search == null) {
+    if (state.books?.next != null && !isNewSearch) {
       try {
         final uri = Uri.parse(state.books!.next!);
         final pageParam = uri.queryParameters['page'];
         if (pageParam != null) {
           nextPage = int.parse(pageParam);
         }
-      } catch (e) {
+      } on Exception catch (_) {
         // If there's an error parsing the URL, just use the next page number
         nextPage = (state.currentPage ?? 0) + 1;
       }
-    } else if (search != null) {
-      // Reset to page 1 when searching
-      nextPage = 1;
     }
 
+    // Debug log
+
     final result = await _fetchBooksFromRemoteUsecase.call(
-      FetchBooksFromRemoteUsecaseParameters(page: nextPage, search: search),
+      FetchBooksFromRemoteUsecaseParameters(
+        page: nextPage,
+        search: effectiveSearch,
+      ),
     );
 
     await result.fold(
       (l) async {
-        await _getBooksFromLocal(search: search);
-        emit(state.copyWith(errorMessage: l.errMessage, isLoadingMore: false));
+        await _getBooksFromLocal(search: effectiveSearch);
+        emit(
+          state.copyWith(
+            errorMessage: l.errMessage,
+            isLoadingMore: false,
+            currentSearchQuery: effectiveSearch,
+          ),
+        );
       },
       (r) {
         final origNext = r.next;
-        if (state.books == null || search != null) {
+
+        // Debug
+
+        if (state.books == null || isNewSearch) {
           emit(
             state.copyWith(
               status: BooksStateStatus.loadedFromRemote,
               books: r,
               isLoadingMore: false,
               currentPage: nextPage,
+              currentSearchQuery: effectiveSearch,
             ),
           );
         } else {
@@ -87,6 +122,7 @@ class BooksCubit extends Cubit<BooksState> {
                 books: state.books!.copyWith(next: null),
                 isLoadingMore: false,
                 currentPage: nextPage,
+                currentSearchQuery: effectiveSearch,
               ),
             );
             return;
@@ -107,12 +143,10 @@ class BooksCubit extends Cubit<BooksState> {
               books: newBooks,
               isLoadingMore: false,
               currentPage: nextPage,
+              currentSearchQuery: effectiveSearch,
             ),
           );
         }
-        print('length: ${state.books?.results?.length}');
-        print('page: $nextPage');
-        print('next: ${r.next}');
       },
     );
   }
@@ -133,9 +167,23 @@ class BooksCubit extends Cubit<BooksState> {
           state.scrollController.position.maxScrollExtent * 0.8) {
         if (state.status != BooksStateStatus.loading &&
             state.books?.next != null) {
-          getBooksFromRemote();
+          getBooksFromRemote(); // No need to pass search, it will use currentSearchQuery
         }
       }
     });
+  }
+
+  /// Clear search query and reload all books
+  void clearSearch() {
+    if (state.currentSearchQuery != null) {
+      emit(
+        state.copyWith(
+          currentSearchQuery: null,
+          books: null,
+          currentPage: null,
+        ),
+      );
+      getBooksFromRemote();
+    }
   }
 }

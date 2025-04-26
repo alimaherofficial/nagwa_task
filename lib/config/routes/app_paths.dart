@@ -5,4 +5,7 @@ class AppPaths {
 
   /// books
   static const String books = '/books';
+
+  /// search
+  static const String search = '/search';
 }

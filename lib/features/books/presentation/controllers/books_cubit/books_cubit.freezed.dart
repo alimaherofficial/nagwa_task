@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$BooksState implements DiagnosticableTreeMixin {
 
- TextEditingController get searchController; ScrollController get scrollController; BooksStateStatus get status; BooksEntity? get books; bool get isLoadingMore; String? get errorMessage; int? get currentPage;
+ TextEditingController get searchController; ScrollController get scrollController; BooksStateStatus get status; BooksEntity? get books; bool get isLoadingMore; String? get errorMessage; int? get currentPage; String? get currentSearchQuery;
 /// Create a copy of BooksState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,21 +27,21 @@ $BooksStateCopyWith<BooksState> get copyWith => _$BooksStateCopyWithImpl<BooksSt
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'BooksState'))
-    ..add(DiagnosticsProperty('searchController', searchController))..add(DiagnosticsProperty('scrollController', scrollController))..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('books', books))..add(DiagnosticsProperty('isLoadingMore', isLoadingMore))..add(DiagnosticsProperty('errorMessage', errorMessage))..add(DiagnosticsProperty('currentPage', currentPage));
+    ..add(DiagnosticsProperty('searchController', searchController))..add(DiagnosticsProperty('scrollController', scrollController))..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('books', books))..add(DiagnosticsProperty('isLoadingMore', isLoadingMore))..add(DiagnosticsProperty('errorMessage', errorMessage))..add(DiagnosticsProperty('currentPage', currentPage))..add(DiagnosticsProperty('currentSearchQuery', currentSearchQuery));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is BooksState&&(identical(other.searchController, searchController) || other.searchController == searchController)&&(identical(other.scrollController, scrollController) || other.scrollController == scrollController)&&(identical(other.status, status) || other.status == status)&&(identical(other.books, books) || other.books == books)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is BooksState&&(identical(other.searchController, searchController) || other.searchController == searchController)&&(identical(other.scrollController, scrollController) || other.scrollController == scrollController)&&(identical(other.status, status) || other.status == status)&&(identical(other.books, books) || other.books == books)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.currentSearchQuery, currentSearchQuery) || other.currentSearchQuery == currentSearchQuery));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,searchController,scrollController,status,books,isLoadingMore,errorMessage,currentPage);
+int get hashCode => Object.hash(runtimeType,searchController,scrollController,status,books,isLoadingMore,errorMessage,currentPage,currentSearchQuery);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'BooksState(searchController: $searchController, scrollController: $scrollController, status: $status, books: $books, isLoadingMore: $isLoadingMore, errorMessage: $errorMessage, currentPage: $currentPage)';
+  return 'BooksState(searchController: $searchController, scrollController: $scrollController, status: $status, books: $books, isLoadingMore: $isLoadingMore, errorMessage: $errorMessage, currentPage: $currentPage, currentSearchQuery: $currentSearchQuery)';
 }
 
 
@@ -52,7 +52,7 @@ abstract mixin class $BooksStateCopyWith<$Res>  {
   factory $BooksStateCopyWith(BooksState value, $Res Function(BooksState) _then) = _$BooksStateCopyWithImpl;
 @useResult
 $Res call({
- TextEditingController searchController, ScrollController scrollController, BooksStateStatus status, BooksEntity? books, bool isLoadingMore, String? errorMessage, int? currentPage
+ TextEditingController searchController, ScrollController scrollController, BooksStateStatus status, BooksEntity? books, bool isLoadingMore, String? errorMessage, int? currentPage, String? currentSearchQuery
 });
 
 
@@ -69,7 +69,7 @@ class _$BooksStateCopyWithImpl<$Res>
 
 /// Create a copy of BooksState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? searchController = null,Object? scrollController = null,Object? status = null,Object? books = freezed,Object? isLoadingMore = null,Object? errorMessage = freezed,Object? currentPage = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? searchController = null,Object? scrollController = null,Object? status = null,Object? books = freezed,Object? isLoadingMore = null,Object? errorMessage = freezed,Object? currentPage = freezed,Object? currentSearchQuery = freezed,}) {
   return _then(_self.copyWith(
 searchController: null == searchController ? _self.searchController : searchController // ignore: cast_nullable_to_non_nullable
 as TextEditingController,scrollController: null == scrollController ? _self.scrollController : scrollController // ignore: cast_nullable_to_non_nullable
@@ -78,7 +78,8 @@ as BooksStateStatus,books: freezed == books ? _self.books : books // ignore: cas
 as BooksEntity?,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
 as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,currentPage: freezed == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as int?,currentSearchQuery: freezed == currentSearchQuery ? _self.currentSearchQuery : currentSearchQuery // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -89,7 +90,7 @@ as int?,
 
 
 class _BooksState with DiagnosticableTreeMixin implements BooksState {
-  const _BooksState({required this.searchController, required this.scrollController, this.status = BooksStateStatus.initial, this.books, this.isLoadingMore = false, this.errorMessage, this.currentPage});
+  const _BooksState({required this.searchController, required this.scrollController, this.status = BooksStateStatus.initial, this.books, this.isLoadingMore = false, this.errorMessage, this.currentPage, this.currentSearchQuery});
   
 
 @override final  TextEditingController searchController;
@@ -99,6 +100,7 @@ class _BooksState with DiagnosticableTreeMixin implements BooksState {
 @override@JsonKey() final  bool isLoadingMore;
 @override final  String? errorMessage;
 @override final  int? currentPage;
+@override final  String? currentSearchQuery;
 
 /// Create a copy of BooksState
 /// with the given fields replaced by the non-null parameter values.
@@ -111,21 +113,21 @@ _$BooksStateCopyWith<_BooksState> get copyWith => __$BooksStateCopyWithImpl<_Boo
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
   properties
     ..add(DiagnosticsProperty('type', 'BooksState'))
-    ..add(DiagnosticsProperty('searchController', searchController))..add(DiagnosticsProperty('scrollController', scrollController))..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('books', books))..add(DiagnosticsProperty('isLoadingMore', isLoadingMore))..add(DiagnosticsProperty('errorMessage', errorMessage))..add(DiagnosticsProperty('currentPage', currentPage));
+    ..add(DiagnosticsProperty('searchController', searchController))..add(DiagnosticsProperty('scrollController', scrollController))..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('books', books))..add(DiagnosticsProperty('isLoadingMore', isLoadingMore))..add(DiagnosticsProperty('errorMessage', errorMessage))..add(DiagnosticsProperty('currentPage', currentPage))..add(DiagnosticsProperty('currentSearchQuery', currentSearchQuery));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BooksState&&(identical(other.searchController, searchController) || other.searchController == searchController)&&(identical(other.scrollController, scrollController) || other.scrollController == scrollController)&&(identical(other.status, status) || other.status == status)&&(identical(other.books, books) || other.books == books)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _BooksState&&(identical(other.searchController, searchController) || other.searchController == searchController)&&(identical(other.scrollController, scrollController) || other.scrollController == scrollController)&&(identical(other.status, status) || other.status == status)&&(identical(other.books, books) || other.books == books)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.errorMessage, errorMessage) || other.errorMessage == errorMessage)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.currentSearchQuery, currentSearchQuery) || other.currentSearchQuery == currentSearchQuery));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,searchController,scrollController,status,books,isLoadingMore,errorMessage,currentPage);
+int get hashCode => Object.hash(runtimeType,searchController,scrollController,status,books,isLoadingMore,errorMessage,currentPage,currentSearchQuery);
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'BooksState(searchController: $searchController, scrollController: $scrollController, status: $status, books: $books, isLoadingMore: $isLoadingMore, errorMessage: $errorMessage, currentPage: $currentPage)';
+  return 'BooksState(searchController: $searchController, scrollController: $scrollController, status: $status, books: $books, isLoadingMore: $isLoadingMore, errorMessage: $errorMessage, currentPage: $currentPage, currentSearchQuery: $currentSearchQuery)';
 }
 
 
@@ -136,7 +138,7 @@ abstract mixin class _$BooksStateCopyWith<$Res> implements $BooksStateCopyWith<$
   factory _$BooksStateCopyWith(_BooksState value, $Res Function(_BooksState) _then) = __$BooksStateCopyWithImpl;
 @override @useResult
 $Res call({
- TextEditingController searchController, ScrollController scrollController, BooksStateStatus status, BooksEntity? books, bool isLoadingMore, String? errorMessage, int? currentPage
+ TextEditingController searchController, ScrollController scrollController, BooksStateStatus status, BooksEntity? books, bool isLoadingMore, String? errorMessage, int? currentPage, String? currentSearchQuery
 });
 
 
@@ -153,7 +155,7 @@ class __$BooksStateCopyWithImpl<$Res>
 
 /// Create a copy of BooksState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? searchController = null,Object? scrollController = null,Object? status = null,Object? books = freezed,Object? isLoadingMore = null,Object? errorMessage = freezed,Object? currentPage = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? searchController = null,Object? scrollController = null,Object? status = null,Object? books = freezed,Object? isLoadingMore = null,Object? errorMessage = freezed,Object? currentPage = freezed,Object? currentSearchQuery = freezed,}) {
   return _then(_BooksState(
 searchController: null == searchController ? _self.searchController : searchController // ignore: cast_nullable_to_non_nullable
 as TextEditingController,scrollController: null == scrollController ? _self.scrollController : scrollController // ignore: cast_nullable_to_non_nullable
@@ -162,7 +164,8 @@ as BooksStateStatus,books: freezed == books ? _self.books : books // ignore: cas
 as BooksEntity?,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
 as bool,errorMessage: freezed == errorMessage ? _self.errorMessage : errorMessage // ignore: cast_nullable_to_non_nullable
 as String?,currentPage: freezed == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
-as int?,
+as int?,currentSearchQuery: freezed == currentSearchQuery ? _self.currentSearchQuery : currentSearchQuery // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
