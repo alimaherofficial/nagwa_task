@@ -28,18 +28,31 @@ class BooksScreenMobile extends StatelessWidget {
       body: SafeArea(
         child: CustomPadding(
           child: BlocConsumer<BooksCubit, BooksState>(
+            listenWhen:
+                (previous, current) => previous.status != current.status,
             listener: (context, state) {},
             builder: (context, state) {
               final cubit = context.read<BooksCubit>();
               if (cubit.isLoaded) {
                 return ListView.separated(
+                  controller: state.scrollController,
+                  shrinkWrap: true,
                   itemCount: state.books?.results?.length ?? 0,
                   separatorBuilder: (BuildContext context, int index) {
                     return SizedX.h2;
                   },
                   itemBuilder: (BuildContext context, int index) {
                     final book = state.books?.results?[index];
-                    return BookCard(book: book!);
+                    return Column(
+                      children: [
+                        BookCard(book: book!),
+                        if (state.status == BooksStateStatus.loading &&
+                            state.books?.results != null &&
+                            state.books!.results!.isNotEmpty &&
+                            index == state.books!.results!.length - 1)
+                          const CircularProgressIndicator(),
+                      ],
+                    );
                   },
                 );
               } else if (state.status == BooksStateStatus.error) {
@@ -47,7 +60,8 @@ class BooksScreenMobile extends StatelessWidget {
                   errorMessage:
                       state.errorMessage ??
                       S.of(context).oppsThereWasAnErrorPleaseTryAgain,
-                  buttonFunction: () {},
+                  buttonFunction:
+                      () => context.read<BooksCubit>().getBooksFromRemote(),
                 );
               } else if (state.status == BooksStateStatus.loading) {
                 return ListView.separated(

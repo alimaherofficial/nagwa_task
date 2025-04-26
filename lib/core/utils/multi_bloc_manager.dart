@@ -1,5 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nagwa_task/core/injection_container.dart';
+import 'package:nagwa_task/features/books/domain/usecases/fetch_books_from_local_usecase.dart';
+import 'package:nagwa_task/features/books/domain/usecases/fetch_books_from_remote_usecase.dart';
+import 'package:nagwa_task/features/books/presentation/controllers/books_cubit/books_cubit.dart';
 import 'package:nagwa_task/features/splash/domain/usecases/change_lang.dart';
 import 'package:nagwa_task/features/splash/domain/usecases/get_saved_lang.dart';
 import 'package:nagwa_task/features/splash/presentation/cubit/main/main_cubit.dart';
@@ -18,6 +21,16 @@ class MultiBlocManager {
             getIt.get<GetSavedLangUseCase>(),
             getIt.get<ChangeLangUseCase>(),
           )..getSavedLang(),
+    ),
+    BlocProvider(
+      create:
+          (context) =>
+              BooksCubit(
+                  getIt.get<FetchBooksFromRemoteUsecase>(),
+                  getIt.get<FetchBooksFromLocalUsecase>(),
+                )
+                ..setupScrollListener()
+                ..getBooksFromRemote(),
     ),
   ];
 

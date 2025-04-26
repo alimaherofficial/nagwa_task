@@ -22,6 +22,21 @@ class BooksEntity extends HiveObject {
 
   /// List of book results
   final List<ResultEntity>? results;
+
+  /// copy with
+  BooksEntity copyWith({
+    int? count,
+    String? next,
+    String? previous,
+    List<ResultEntity>? results,
+  }) {
+    return BooksEntity(
+      count: count ?? this.count,
+      next: next ?? this.next,
+      previous: previous ?? this.previous,
+      results: results ?? this.results,
+    );
+  }
 }
 
 /// Represents a single book result with its details
@@ -56,6 +71,23 @@ class ResultEntity extends HiveObject {
 
   /// Available formats of the book
   final FormatsEntity? formats;
+
+  /// copy with
+  ResultEntity copyWith({
+    int? id,
+    String? title,
+    List<AuthorEntity>? authors,
+    List<String>? summaries,
+    FormatsEntity? formats,
+  }) {
+    return ResultEntity(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      authors: authors ?? this.authors,
+      summaries: summaries ?? this.summaries,
+      formats: formats ?? this.formats,
+    );
+  }
 }
 
 /// Represents an author with their biographical information
@@ -68,6 +100,11 @@ class AuthorEntity extends HiveObject {
   /// Name of the author
 
   final String? name;
+
+  /// copy with
+  AuthorEntity copyWith({String? name}) {
+    return AuthorEntity(name: name ?? this.name);
+  }
 }
 
 /// Represents the different formats available for a book
@@ -79,4 +116,9 @@ class FormatsEntity extends HiveObject {
   /// JPEG image format URL
 
   final String? imageJpeg;
+
+  /// copy with
+  FormatsEntity copyWith({String? imageJpeg}) {
+    return FormatsEntity(imageJpeg: imageJpeg ?? this.imageJpeg);
+  }
 }

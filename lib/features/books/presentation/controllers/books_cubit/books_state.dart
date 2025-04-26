@@ -9,7 +9,10 @@ enum BooksStateStatus {
   loading,
 
   /// The loaded state
-  loaded,
+  loadedFromRemote,
+
+  /// The loaded state
+  loadedFromLocal,
 
   /// The error state
   error,
@@ -21,13 +24,16 @@ abstract class BooksState with _$BooksState {
   /// The initial state
   const factory BooksState({
     required TextEditingController searchController,
+    required ScrollController scrollController,
     @Default(BooksStateStatus.initial) BooksStateStatus status,
     BooksEntity? books,
-    @Default(1) int page,
+    @Default(0) int? page,
     String? errorMessage,
   }) = _BooksState;
 
   /// The initial state
-  factory BooksState.initial() =>
-      BooksState(searchController: TextEditingController());
+  factory BooksState.initial() => BooksState(
+    searchController: TextEditingController(),
+    scrollController: ScrollController(),
+  );
 }

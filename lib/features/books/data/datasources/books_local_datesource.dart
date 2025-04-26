@@ -15,7 +15,7 @@ abstract class BooksLocalDataSource {
   ///
   /// Returns a [BooksEntity] object containing the list of books
   /// and pagination information
-  Future<void> saveBooksToLocal(BooksEntity books);
+  Future<void> saveBooksToLocal(BooksEntity books, int page);
 }
 
 /// Implementation of the [BooksLocalDataSource] abstract class
@@ -28,9 +28,11 @@ class BooksLocalDataSourceImpl extends BooksLocalDataSource {
   }
 
   @override
-  Future<void> saveBooksToLocal(BooksEntity books) async {
+  Future<void> saveBooksToLocal(BooksEntity books, int page) async {
     final box = await Hive.openBox<BooksEntity>(HiveBoxes.books.name);
-    await box.clear();
+    if (page == 1) {
+      await box.clear();
+    }
     await box.add(books);
   }
 }

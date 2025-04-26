@@ -5,7 +5,7 @@ part 'books_model.freezed.dart';
 part 'books_model.g.dart';
 
 /// Books Model
-@freezed
+@Freezed(copyWith: false)
 abstract class BooksModel extends BooksEntity with _$BooksModel {
   /// Books Model Constructor
   factory BooksModel({
@@ -23,7 +23,7 @@ abstract class BooksModel extends BooksEntity with _$BooksModel {
 }
 
 /// Result Model
-@freezed
+@Freezed(copyWith: false)
 abstract class ResultModel extends ResultEntity with _$ResultModel {
   /// Result Model Constructor
   factory ResultModel({
@@ -43,7 +43,7 @@ abstract class ResultModel extends ResultEntity with _$ResultModel {
 }
 
 /// Author Model
-@freezed
+@Freezed(copyWith: false)
 abstract class AuthorModel extends AuthorEntity with _$AuthorModel {
   /// Author Model Constructor
   factory AuthorModel({@JsonKey(name: 'name') String? name}) = _AuthorModel;
@@ -57,7 +57,7 @@ abstract class AuthorModel extends AuthorEntity with _$AuthorModel {
 }
 
 /// Formats Model
-@freezed
+@Freezed(copyWith: false)
 abstract class FormatsModel extends FormatsEntity with _$FormatsModel {
   /// Formats Model Constructor
   factory FormatsModel({@JsonKey(name: 'image/jpeg') String? imageJpeg}) =

@@ -31,7 +31,7 @@ class BooksRepositoryImpl extends BooksRepository {
   }) async {
     try {
       final books = await remoteDataSource.fetchBooks(page: page);
-      await localDataSource.saveBooksToLocal(books);
+      await localDataSource.saveBooksToLocal(books, page);
       return right(books);
     } on Exception catch (e) {
       return left(Failure.fromObject(e));
