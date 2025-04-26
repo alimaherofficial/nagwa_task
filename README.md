@@ -73,8 +73,7 @@ lib/
 
 ### Prerequisites
 
-- Flutter SDK (^3.7.2)
-- Dart SDK (^3.7.2)
+- Flutter SDK (^3.29.7)
 - An IDE (Android Studio, VS Code, etc.)
 
 ### Installation
