@@ -1,0 +1,14 @@
+analyzer:
+  errors:
+    lines_longer_than_80_chars: ignore
+    invalid_annotation_target: ignore
+  exclude:
+    - "lib/generated/**"
+    - "lib/core/utils/assets.dart"
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+include: package:very_good_analysis/analysis_options.yaml
+
+linter:
+  rules:
+    avoid_redundant_argument_values: false

@@ -1,0 +1,57 @@
+{
+  "@@locale": "en",
+  "tryAgain": "Try Again",
+  "@tryAgain": {
+    "description": "Text for try again button"
+  },
+  "noInternetConnection": "No Internet Connection",
+  "@noInternetConnection": {
+    "description": "Message when no internet connection is available"
+  },
+  "connectionTimeoutWithApiserver": "Connection timeout with ApiServer",
+  "@connectionTimeoutWithApiserver": {
+    "description": "Message when connection timeout with ApiServer is available"
+  },
+  "sendTimeoutWithApiserver": "Send timeout with ApiServer",
+  "@sendTimeoutWithApiserver": {
+    "description": "Message when send timeout with ApiServer is available"
+  },
+  "receiveTimeoutWithApiserver": "Receive timeout with ApiServer",
+  "@receiveTimeoutWithApiserver": {
+    "description": "Message when receive timeout with ApiServer is available"
+  },
+  "badCertificateWithApiserver": "Bad certificate with ApiServer",
+  "@badCertificateWithApiserver": {
+    "description": "Message when bad certificate with ApiServer is available"
+  },
+  "badResponseFromApiserver": "Bad response from ApiServer",
+  "@badResponseFromApiserver": {
+    "description": "Message when bad response from ApiServer is available"
+  },
+  "requestToApiserverWasCanceled": "Request to ApiServer was canceled",
+  "@requestToApiserverWasCanceled": {
+    "description": "Message when request to ApiServer was canceled"
+  },
+  "unexpectedErrorPleaseTryAgain": "Unexpected error, please try again",
+  "@unexpectedErrorPleaseTryAgain": {
+    "description": "Message when unexpected error is available"
+  },
+  "unknownErrorWithApiserver": "Unknown error with ApiServer",
+  "@unknownErrorWithApiserver": {
+    "description": "Message when unknown error with ApiServer is available"
+  },
+  "oppsThereWasAnErrorPleaseLoginAgain": "Oops, there was an error. Please login again.",
+  "@oppsThereWasAnErrorPleaseLoginAgain": {
+    "description": "Message when oops there was an error please login again is available"
+  },
+  "internalServerErrorPleaseTryLater": "Internal server error, please try later.",
+  "@internalServerErrorPleaseTryLater": {
+    "description": "Message when internal server error please try later is available"
+  },
+  "oppsThereWasAnErrorPleaseTryAgain": "Oops, there was an error. Please try again.",
+  "@oppsThereWasAnErrorPleaseTryAgain": {
+    "description": "Message when oops there was an error please try again is available"
+  },
+  "showLess": "Show Less",
+  "seeMore": "See More"
+}
