@@ -37,7 +37,7 @@ types:
         index: 3
   FormatsEntity:
     typeId: 3
-    nextIndex: 14
+    nextIndex: 15
     fields:
       imageJpeg:
         index: 13

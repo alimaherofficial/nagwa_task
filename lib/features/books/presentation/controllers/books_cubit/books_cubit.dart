@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:nagwa_task/features/books/data/models/books_model.dart';
 import 'package:nagwa_task/features/books/domain/entities/books_entity.dart';
 import 'package:nagwa_task/features/books/domain/usecases/fetch_books_from_local_usecase.dart';
 import 'package:nagwa_task/features/books/domain/usecases/fetch_books_from_remote_usecase.dart';
@@ -35,34 +34,48 @@ class BooksCubit extends Cubit<BooksState> {
   /// this function is used to get the books from remote
   Future<void> getBooksFromRemote({String? search}) async {
     // Don't fetch if already loading or if there are no more pages
-    if (state.status == BooksStateStatus.loading ||
-        (state.books?.next == null && state.page! > 0)) {
+    if (state.status == BooksStateStatus.loading &&
+        state.isLoadingMore == true) {
       return;
     }
 
-    emit(state.copyWith(status: BooksStateStatus.loading));
+    emit(state.copyWith(status: BooksStateStatus.loading, isLoadingMore: true));
+
+    var nextPage = 1;
+    if (state.books?.next != null && search == null) {
+      try {
+        final uri = Uri.parse(state.books!.next!);
+        final pageParam = uri.queryParameters['page'];
+        if (pageParam != null) {
+          nextPage = int.parse(pageParam);
+        }
+      } catch (e) {
+        // If there's an error parsing the URL, just use the next page number
+        nextPage = (state.currentPage ?? 0) + 1;
+      }
+    } else if (search != null) {
+      // Reset to page 1 when searching
+      nextPage = 1;
+    }
 
     final result = await _fetchBooksFromRemoteUsecase.call(
-      FetchBooksFromRemoteUsecaseParameters(
-        page: state.page! + 1,
-        search: search,
-      ),
+      FetchBooksFromRemoteUsecaseParameters(page: nextPage, search: search),
     );
 
     await result.fold(
       (l) async {
         await _getBooksFromLocal(search: search);
-        emit(state.copyWith(errorMessage: l.errMessage));
+        emit(state.copyWith(errorMessage: l.errMessage, isLoadingMore: false));
       },
       (r) {
-        final nextPage = Uri.parse(r.next ?? '').queryParameters['page'];
-
-        if (state.books == null) {
+        final origNext = r.next;
+        if (state.books == null || search != null) {
           emit(
             state.copyWith(
               status: BooksStateStatus.loadedFromRemote,
-              books: (r as BooksModel).copyWith(next: r.next),
-              page: int.tryParse(nextPage ?? '0') ?? 0,
+              books: r,
+              isLoadingMore: false,
+              currentPage: nextPage,
             ),
           );
         } else {
@@ -72,23 +85,34 @@ class BooksCubit extends Cubit<BooksState> {
               state.copyWith(
                 status: BooksStateStatus.loadedFromRemote,
                 books: state.books!.copyWith(next: null),
+                isLoadingMore: false,
+                currentPage: nextPage,
               ),
             );
             return;
           }
 
+          final fullList = [
+            ...(state.books!.results ?? List<ResultEntity>.of([])),
+            ...(r.results!),
+          ];
+          final newBooks = state.books!.copyWith(
+            next: origNext,
+            count: r.count,
+            results: fullList,
+          );
           emit(
             state.copyWith(
               status: BooksStateStatus.loadedFromRemote,
-              books: state.books!.copyWith(
-                next: r.next,
-                count: r.count,
-                results: [...(state.books!.results ?? []), ...(r.results!)],
-              ),
-              page: int.tryParse(nextPage ?? '0') ?? state.page,
+              books: newBooks,
+              isLoadingMore: false,
+              currentPage: nextPage,
             ),
           );
         }
+        print('length: ${state.books?.results?.length}');
+        print('page: $nextPage');
+        print('next: ${r.next}');
       },
     );
   }

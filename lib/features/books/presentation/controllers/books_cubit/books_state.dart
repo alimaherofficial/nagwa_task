@@ -27,8 +27,9 @@ abstract class BooksState with _$BooksState {
     required ScrollController scrollController,
     @Default(BooksStateStatus.initial) BooksStateStatus status,
     BooksEntity? books,
-    @Default(0) int? page,
+    @Default(false) bool isLoadingMore,
     String? errorMessage,
+    int? currentPage,
   }) = _BooksState;
 
   /// The initial state
